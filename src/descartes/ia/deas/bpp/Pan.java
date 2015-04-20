@@ -53,6 +53,29 @@ public class Pan implements Cloneable {
 	}
 	
 	/**
+	 * @return how many hits we have to do minimum
+	 */
+	public int getHeuristic() {
+		int hits = 0;
+		
+		for(int i=0; i<this.getStack().size(); i++) {
+			if(i==0) {	//table comparison
+				if(this.getStack().get(i).getSize() != this.getStack().size())	//size table-1 ≠ biggest pancake (WORKS !) 
+					hits++;
+				
+			}
+			else {	//pancakes comparison
+				if(this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()-1)		//top one bit smaller
+				&& this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()+1))	//top one bit bigger
+					hits++;
+			}
+					
+		}
+		
+		return hits;
+	}
+	
+	/**
 	 * @return true if the burnt pancakes problem is solved 
 	 */
 	public boolean isBunrtCorrect() {
@@ -89,6 +112,10 @@ public class Pan implements Cloneable {
 			try {
 				this.flip(randomFlipIndex);
 			} catch (PancakeException e) { e.printStackTrace(); }
+			
+			try {
+				Thread.sleep(2);	// more random with delay ?
+			} catch (InterruptedException e) { e.printStackTrace(); }
 		}
 	}
 	

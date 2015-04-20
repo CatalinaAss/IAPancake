@@ -13,43 +13,51 @@ public class AI {
 		this.actions = new Vector<Integer>();
 	}
 	
-	public void resolve() {
+	public boolean resolve(int depth) {
+		boolean result;
 		
-		for(int i=0; i<10000; i++) {
+		for(int i=0; i<depth; i++) {
+			result = idaStar(i, this.pan);
+			System.out.println("DEBUG resolve: Depth="+i);
+			System.out.println("DEBUG resolve: result="+result);
 			
+			if(result == true) {
+				System.out.println("STOP");
+				return result;				
+			}
 		}
-	}
-
-	public boolean idaStar(int depth) {
-		if(depth==0)
-			return this.pan.isCorrect();
-		if(depth<this.getHeuristic())
-			return false;
 		
 		return false;
 	}
-	
-	/**
-	 * @return how many hits we have to do minimum
-	 */
-	public int getHeuristic() {
-		int hits = 0;
+
+	public boolean idaStar(int depth, Pan pan) {
+		System.out.println("DEBUG idaStar: Depth="+depth);
+		System.out.println("DEBUG idaStar: Heuristic="+pan.getHeuristic());
+		
+		if(depth==0)
+			return pan.isCorrect();
+		if(depth<pan.getHeuristic())	// comment !
+			return false;
 		
 		for(int i=0; i<pan.getStack().size(); i++) {
-			if(i==0) {	//table comparison
-				if(pan.getStack().get(i).getSize() != pan.getStack().size())	//size table-1 ≠ biggest pancake (WORKS !) 
-					hits++;
-				
+			Pan pan2 = pan.clone();
+			
+			try {
+				System.out.println("DEBUG Flip:"+i);
+				pan2.flip(i);
+			} catch (PancakeException e) { e.printStackTrace(); }
+			
+			pan2.showForHuman();
+			
+			boolean result = this.idaStar(depth-1, pan2);
+			
+			if(result == true) {
+				System.out.println("DEBUG idaSar: FOUND !");
+				return true;
 			}
-			else {	//pancakes comparison
-				if(pan.getStack().get(i).getSize() != (pan.getStack().get(i-1).getSize()-1)		//top one bit smaller
-				&& pan.getStack().get(i).getSize() != (pan.getStack().get(i-1).getSize()+1))	//top one bit bigger
-					hits++;
-			}
-					
 		}
 		
-		return hits;
+		return false;
 	}
 	
 	public void show() {
