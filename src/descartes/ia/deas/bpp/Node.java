@@ -31,7 +31,7 @@ public class Node {
 		if(n.getSibling() == null)
 			return;
 		else
-			for(int i=0; i<n.getPan().getTop(); i++) {
+			for(int i=0; i<n.getPan().getStack().size(); i++) {
 				System.out.print("\t");
 				this.show(n.getSibling().get(i));
 		}

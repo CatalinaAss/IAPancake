@@ -1,22 +1,31 @@
 package descartes.ia.deas.bpp;
 public class Main {
 	
-	public static void main(String[] args) {
-		Pan p = new Pan(7);
+	public static void main(String[] args) throws PancakeException {
+		Pan p = new Pan(8);
 		AI ai = new AI(p);
-		p.showForHuman();
 		
-		ai.show();
-
+		//p.showForHuman();
+		randomResolve(p, ai);
 	}
 	
-	public static void randomResolve(Pan p) {
+	public static void randomResolve(Pan p, AI ai) {
 		int i=0;
 		do {
-			p.mix(1);
 			i++;
+			p.mix(1);
 			p.showForHuman();
-			System.out.print(p.isCorrect()+" i :"+i+"\n");
-		} while (p.isCorrect() == false);
+			System.out.println("i:"+i+" h:"+ai.getHeuristic());
+			System.out.println(p.isCorrect());
+			System.out.println(p.isBunrtCorrect()+"\n\n");
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		} while (p.isBunrtCorrect() == false);
 	}
 }

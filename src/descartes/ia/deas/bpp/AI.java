@@ -35,8 +35,18 @@ public class AI {
 	public int getHeuristic() {
 		int hits = 0;
 		
-		for(int i=0; i<pan.getTop(); i++) {
-			
+		for(int i=0; i<pan.getStack().size()-1; i++) {
+			if(i==0) {	//table comparison
+				if(pan.getStack().get(i).getSize() != pan.getStack().size())	//size table-1 ≠ biggest pancake (WORKS !) 
+					hits++;
+				
+			}
+			else {	//pancakes comparison
+				if(pan.getStack().get(i).getSize() != (pan.getStack().get(i-1).getSize()-1)		//top one bit smaller
+				&& pan.getStack().get(i).getSize() != (pan.getStack().get(i-1).getSize()+1))	//top one bit bigger
+					hits++;
+			}
+					
 		}
 		
 		return hits;
