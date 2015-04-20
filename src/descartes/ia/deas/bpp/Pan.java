@@ -132,11 +132,24 @@ public class Pan implements Cloneable {
 	/**
 	 * Show the pan stack where the lowest pancake is on the bottom
 	 */
-	public void showForHuman() {
+	public void showForHuman(int indent) {
 		for(int i=this.getStack().size()-1; i>=0; i--) {
-			System.out.print((i) +" ");
+			System.out.print(this.tabIndentation(indent) + (i) +" ");
 			stack.get(i).show();
 		}
+	}
+	
+	/**
+	 * @param indent : number of tabulation
+	 * @return
+	 */
+	public String tabIndentation(int indent) {
+		String indentation="";
+		
+		for(int i=0; i<indent; i++)
+			indentation+="\t";
+		
+		return indentation;
 	}
 
 	public Vector<Pancake> getStack() {

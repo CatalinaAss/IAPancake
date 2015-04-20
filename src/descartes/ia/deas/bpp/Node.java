@@ -25,7 +25,7 @@ public class Node {
 		
 		//show the node
 		System.out.println(n.getCost());
-		n.getPan().showForHuman();
+		n.getPan().showForHuman(0);
 		
 		//execute function for the sibling
 		if(n.getSibling() == null)

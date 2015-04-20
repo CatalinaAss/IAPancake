@@ -16,23 +16,25 @@ public class AI {
 	public boolean resolve(int depth) {
 		boolean result;
 		
-		for(int i=0; i<depth; i++) {
+		for(int i=0; i<=depth; i++) {
 			result = idaStar(i, this.pan);
-			System.out.println("DEBUG resolve: Depth="+i);
-			System.out.println("DEBUG resolve: result="+result);
+			//System.out.println("DEBUG resolve: Depth="+i);
+			//System.out.println("DEBUG resolve: result="+result);
 			
 			if(result == true) {
 				System.out.println("STOP");
 				return result;				
 			}
+			
+			this.actions.removeAllElements();	//delete actions
 		}
 		
 		return false;
 	}
 
 	public boolean idaStar(int depth, Pan pan) {
-		System.out.println("DEBUG idaStar: Depth="+depth);
-		System.out.println("DEBUG idaStar: Heuristic="+pan.getHeuristic());
+		System.out.println("DEBUG idaStar: Depth="+depth+" Heuristic="+pan.getHeuristic());
+		int d = depth; 
 		
 		if(depth==0)
 			return pan.isCorrect();
@@ -42,12 +44,11 @@ public class AI {
 		for(int i=0; i<pan.getStack().size(); i++) {
 			Pan pan2 = pan.clone();
 			
-			try {
-				System.out.println("DEBUG Flip:"+i);
-				pan2.flip(i);
-			} catch (PancakeException e) { e.printStackTrace(); }
+			System.out.println("DEBUG Flip:"+i);
+			try { pan2.flip(i); } catch (PancakeException e) { e.printStackTrace(); }
+			actions.add(i);
 			
-			pan2.showForHuman();
+			//pan2.showForHuman(depth-d);
 			
 			boolean result = this.idaStar(depth-1, pan2);
 			
@@ -57,6 +58,7 @@ public class AI {
 			}
 		}
 		
+		System.out.println("DEBUG idaSar: false !");
 		return false;
 	}
 	
