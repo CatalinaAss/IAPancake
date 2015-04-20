@@ -2,8 +2,6 @@ package descartes.ia.deas.bpp;
 
 import java.util.Vector;
 
-//ALLO ALLO ALLO TEST
-
 public class AI {
 	private Pan pan;
 	private Node tree;
@@ -37,7 +35,7 @@ public class AI {
 	public int getHeuristic() {
 		int hits = 0;
 		
-		for(int i=0; i<pan.getStack().size()-1; i++) {
+		for(int i=0; i<pan.getStack().size(); i++) {
 			if(i==0) {	//table comparison
 				if(pan.getStack().get(i).getSize() != pan.getStack().size())	//size table-1 ≠ biggest pancake (WORKS !) 
 					hits++;
