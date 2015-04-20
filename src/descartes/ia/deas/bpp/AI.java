@@ -2,6 +2,8 @@ package descartes.ia.deas.bpp;
 
 import java.util.Vector;
 
+//ALLO ALLO ALLO TEST
+
 public class AI {
 	private Pan pan;
 	private Node tree;
