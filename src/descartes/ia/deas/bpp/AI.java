@@ -4,12 +4,11 @@ import java.util.Vector;
 
 public class AI {
 	private Pan pan;
-	private Node tree;
 	private Vector<Integer> actions;
+	private int hits = 0;
 	
 	public AI(Pan pan) {
 		this.pan = pan;
-		this.tree = new Node(pan);
 		this.actions = new Vector<Integer>();
 	}
 	
@@ -17,53 +16,58 @@ public class AI {
 		boolean result;
 		
 		for(int i=0; i<=depth; i++) {
-			result = idaStar(i, this.pan);
-			//System.out.println("DEBUG resolve: Depth="+i);
-			//System.out.println("DEBUG resolve: result="+result);
+			result = idaStar(i, this.pan, 0);
 			
 			if(result == true) {
-				System.out.println("STOP");
+				System.out.println("\n!!! STOP !!!");
 				return result;				
 			}
-			
-			this.actions.removeAllElements();	//delete actions
 		}
 		
 		return false;
 	}
 
-	public boolean idaStar(int depth, Pan pan) {
-		System.out.println("DEBUG idaStar: Depth="+depth+" Heuristic="+pan.getHeuristic());
-		int d = depth; 
+	public boolean idaStar(int depth, Pan pan, int rec) {
+		hits++;
 		
 		if(depth==0)
 			return pan.isCorrect();
-		if(depth<pan.getHeuristic())	// comment !
+		if(depth<pan.getHeuristic()) {	// comment !
+			System.out.println("---DEBUG IDASTAR--- Depth < Heuristic");
 			return false;
+		}
 		
 		for(int i=0; i<pan.getStack().size(); i++) {
 			Pan pan2 = pan.clone();
 			
-			System.out.println("DEBUG Flip:"+i);
+			System.out.println("---DEBUG IDASTAR--- Depth:"+ depth +" Heuristic:"+ pan.getHeuristic() +" Flip:"+ i +" Hits:"+ hits +" Rec :"+ rec);
 			try { pan2.flip(i); } catch (PancakeException e) { e.printStackTrace(); }
-			actions.add(i);
 			
-			//pan2.showForHuman(depth-d);
+			pan2.show();
 			
-			boolean result = this.idaStar(depth-1, pan2);
+			boolean result = this.idaStar(depth-1, pan2, rec+1);
 			
 			if(result == true) {
-				System.out.println("DEBUG idaSar: FOUND !");
+				actions.add(i);
 				return true;
 			}
 		}
 		
-		System.out.println("DEBUG idaSar: false !");
+		System.out.println("\n---DEBUG IDASTAR--- The algorithm didn't not found at this level("+depth+"), let's try deeper !\n");
 		return false;
 	}
 	
-	public void show() {
-		this.tree.show(this.tree);
+	/**
+	 * Show 
+	 */
+	public void redevelop() {
+		pan.show();
+		
+		for(int i=this.actions.size()-1; i>=0; i--) {
+			try { pan.flip(this.actions.get(i)); } catch (PancakeException e) { e.printStackTrace(); }
+			pan.show();
+		}
+		
 	}
 
 	public Pan getPan() {
@@ -72,14 +76,6 @@ public class AI {
 
 	public void setPan(Pan pan) {
 		this.pan = pan;
-	}
-
-	public Node getTree() {
-		return tree;
-	}
-
-	public void setTree(Node tree) {
-		this.tree = tree;
 	}
 
 	public Vector<Integer> getActions() {

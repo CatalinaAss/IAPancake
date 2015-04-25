@@ -15,7 +15,7 @@ public class Pancake {
 	}
 	
 	/**
-	 * Display the pancake : + for good side, - for bad side
+	 * Display the pancake : + for good side, - for the burnt side
 	 */
 	public void show() {
 		char look;

@@ -10,7 +10,7 @@ public class Pan implements Cloneable {
 	}
 	
 	/**
-	 * Create a Pan with stackSize pancakes in the good order biggest(index 0) to smallest
+	 * Create a Pan with stackSize pancakes in the correct order, biggest(index 0) to smallest
 	 * @param stackSize
 	 */
 	public Pan(int stackSize) {
@@ -21,7 +21,7 @@ public class Pan implements Cloneable {
 	}
 	
 	/**
-	 * Return a clone of the currant object
+	 * Return a clone of the current object
 	 */
 	public Pan clone() {
 		return new Pan(this.stack);
@@ -53,20 +53,20 @@ public class Pan implements Cloneable {
 	}
 	
 	/**
-	 * @return how many hits we have to do minimum
+	 * @return the minimum hits we have to do
 	 */
 	public int getHeuristic() {
 		int hits = 0;
 		
 		for(int i=0; i<this.getStack().size(); i++) {
-			if(i==0) {	//table comparison
-				if(this.getStack().get(i).getSize() != this.getStack().size())	//size table-1 ≠ biggest pancake (WORKS !) 
+			if(i==0) {	//compare to the table
+				if(this.getStack().get(i).getSize() != this.getStack().size())	//is the biggest pancake on the table?
 					hits++;
 				
 			}
-			else {	//pancakes comparison
-				if(this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()-1)		//top one bit smaller
-				&& this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()+1))	//top one bit bigger
+			else {	//compare pancakes
+				if(this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()-1)		//top one is a bit smaller
+				&& this.getStack().get(i).getSize() != (this.getStack().get(i-1).getSize()+1))	//top one is a bit bigger
 					hits++;
 			}
 					
@@ -123,10 +123,11 @@ public class Pan implements Cloneable {
 	 * Show the pan stack where the lowest pancake is on the top
 	 */
 	public void show() {
+		System.out.print("|");
 		for(int i=0; i<this.stack.size(); i++) {
-			System.out.print((i) +" ");			
-			stack.get(i).show();
+			System.out.print(stack.get(i).getSize()+".");
 		}
+		System.out.println();
 	}
 	
 	/**
